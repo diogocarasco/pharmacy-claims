@@ -8,15 +8,16 @@ services:
     container_name: go-pharmacy-service
     ports:
       - "8080:8080"
-      - "2345:2345"
     volumes:
       - ./data:/app/data
-      - ./data/pharmacies/pharmacies.csv:/app/pharmacies.csv
-      - ./config.json:/app/config.json
       - ./docs:/app/docs
     environment:
       AUTH_TOKEN: hippotoken
-    command: ["dlv", "dap", "--listen=:2345", "--api-version=2", "--headless=true", "--log"] 
+      DATABASE_PATH: /app/data/pharmacy.db
+      PHARMACIES_CSV_PATH: /app/data/pharmacies/pharmacies.csv
+      CLAIMS_DATA_PATH: /app/data/claims
+      REVERTS_DATA_PATH: /app/data/reverts
+      PORT: 8080
     restart: always
 
   prometheus:
