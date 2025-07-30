@@ -60,7 +60,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/claims/reverse": {
+        "/claims/reversal": {
             "post": {
                 "security": [
                     {

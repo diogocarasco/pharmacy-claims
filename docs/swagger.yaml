@@ -107,7 +107,7 @@ paths:
       summary: Get claim by ID
       tags:
       - claims
-  /claims/reverse:
+  /claims/reversal:
     post:
       consumes:
       - application/json
