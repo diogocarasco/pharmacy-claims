@@ -133,7 +133,7 @@ func (h *Handlers) GetClaimByIDHandler(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} object "Reversal successfully recorded"
 // @Failure 400 "Invalid request or claim already reverted/not found"
 // @Failure 500 "Internal server error"
-// @Router /claims/reverse [post]
+// @Router /claims/reversal [post]
 func (h *Handlers) ReverseClaimHandler(w http.ResponseWriter, r *http.Request) {
 	var req models.ClaimReversalRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

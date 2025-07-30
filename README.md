@@ -87,8 +87,8 @@ The `data` directory is crucial for the service, as it stores persistent data an
 * `data/`
     * `pharmacy.db`: This is the SQLite database file where all pharmacy, claim, and revert information is stored.
     * `pharmacies.csv`: A CSV file containing the initial list of pharmacies that will be loaded into the database upon service startup.
-    * `claims/`: A directory where claim files (e.g., in JSON or CSV format, depending on your internal loader implementation) can be placed to be loaded into the database.
-    * `reverts/`: A directory where revert files (similar to claims, in JSON or CSV format) can be placed to be loaded into the database.
+    * `claim/`: A directory where claim files (e.g., in JSON or CSV format, depending on your internal loader implementation) can be placed to be loaded into the database.
+    * `reversal/`: A directory where revert files (similar to claims, in JSON or CSV format) can be placed to be loaded into the database.
 
 --- 
 
@@ -127,7 +127,7 @@ curl -X POST \
 
 
 **Example: Reverse an Existing Claim**
-**Endpoint:** `POST /revert`
+**Endpoint:** `POST /reversal`
 **Headers:**
 * `Content-Type: application/json`
 * `Authorization: Bearer hippotoken`
@@ -142,7 +142,7 @@ curl -X POST \
 **Example with** `curl`
 ```bash
 curl -X POST \
-  http://localhost:8080/revert \
+  http://localhost:8080/reversal \
   -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer hippotoken' \
   -d '{
