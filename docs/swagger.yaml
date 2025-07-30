@@ -30,6 +30,15 @@ definitions:
         description: ID of the claim to be reverted
         type: string
     type: object
+  models.ClaimReversalResponse:
+    properties:
+      claim_id:
+        description: ID of the reverted claim
+        type: string
+      status:
+        description: Operation status (e.g., "claim reversed")
+        type: string
+    type: object
   models.ClaimSubmissionRequest:
     properties:
       ndc:
@@ -107,7 +116,22 @@ paths:
       summary: Get claim by ID
       tags:
       - claims
-  /claims/reversal:
+  /health:
+    get:
+      description: Returns an "ok" status if the application is running.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Status OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Checks application health
+      tags:
+      - health
+  /reversal:
     post:
       consumes:
       - application/json
@@ -125,7 +149,7 @@ paths:
         "200":
           description: Reversal successfully recorded
           schema:
-            type: object
+            $ref: '#/definitions/models.ClaimReversalResponse'
         "400":
           description: Invalid request or claim already reverted/not found
         "500":
@@ -135,21 +159,6 @@ paths:
       summary: Reverse an existing claim
       tags:
       - claims
-  /health:
-    get:
-      description: Returns an "ok" status if the application is running.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Status OK
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Checks application health
-      tags:
-      - health
 securityDefinitions:
   ApiKeyAuth:
     in: header

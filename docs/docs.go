@@ -60,51 +60,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/claims/reversal": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Reverts an already submitted claim and records the reversal",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "claims"
-                ],
-                "summary": "Reverse an existing claim",
-                "parameters": [
-                    {
-                        "description": "Claim ID to be reverted",
-                        "name": "reversal",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.ClaimReversalRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Reversal successfully recorded",
-                        "schema": {
-                            "type": "object"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request or claim already reverted/not found"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
         "/claims/{id}": {
             "get": {
                 "security": [
@@ -170,6 +125,51 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/reversal": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Reverts an already submitted claim and records the reversal",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "claims"
+                ],
+                "summary": "Reverse an existing claim",
+                "parameters": [
+                    {
+                        "description": "Claim ID to be reverted",
+                        "name": "reversal",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ClaimReversalRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reversal successfully recorded",
+                        "schema": {
+                            "$ref": "#/definitions/models.ClaimReversalResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or claim already reverted/not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -211,6 +211,19 @@ const docTemplate = `{
             "properties": {
                 "claim_id": {
                     "description": "ID of the claim to be reverted",
+                    "type": "string"
+                }
+            }
+        },
+        "models.ClaimReversalResponse": {
+            "type": "object",
+            "properties": {
+                "claim_id": {
+                    "description": "ID of the reverted claim",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "Operation status (e.g., \"claim reversed\")",
                     "type": "string"
                 }
             }

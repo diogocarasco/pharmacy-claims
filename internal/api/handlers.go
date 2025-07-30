@@ -130,10 +130,10 @@ func (h *Handlers) GetClaimByIDHandler(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Security ApiKeyAuth
 // @Param reversal body models.ClaimReversalRequest true "Claim ID to be reverted"
-// @Success 200 {object} object "Reversal successfully recorded"
+// @Success 200 {object} models.ClaimReversalResponse "Reversal successfully recorded"
 // @Failure 400 "Invalid request or claim already reverted/not found"
 // @Failure 500 "Internal server error"
-// @Router /claims/reversal [post]
+// @Router /reversal [post]
 func (h *Handlers) ReverseClaimHandler(w http.ResponseWriter, r *http.Request) {
 	var req models.ClaimReversalRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
