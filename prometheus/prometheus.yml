@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'go-pharmacy-service'
+    static_configs:
+      - targets: ['go-pharmacy-service:8080']

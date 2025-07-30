@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  go-pharmacy-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go-pharmacy-service
+    ports:
+      - "8080:8080"
+      - "2345:2345"
+    volumes:
+      - ./data:/app/data
+      - ./data/pharmacies/pharmacies.csv:/app/pharmacies.csv
+      - ./config.json:/app/config.json
+      - ./docs:/app/docs
+    environment:
+      AUTH_TOKEN: hippotoken
+    command: ["dlv", "dap", "--listen=:2345", "--api-version=2", "--headless=true", "--log"] 
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command: --config.file=/etc/prometheus/prometheus.yml
+    depends_on:
+      - go-pharmacy-service
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+volumes:
+  grafana-data:

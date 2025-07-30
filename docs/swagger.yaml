@@ -1,0 +1,158 @@
+basePath: /
+definitions:
+  models.Claim:
+    properties:
+      id:
+        description: Unique ID of the claim (UUID)
+        type: string
+      ndc:
+        description: National Drug Code of the medication
+        type: string
+      npi:
+        description: National Provider Identifier of the pharmacy
+        type: string
+      price:
+        description: Price of the medication
+        type: number
+      quantity:
+        description: Quantity of the medication
+        type: number
+      reverted:
+        description: Indicates if the claim has been reverted
+        type: boolean
+      timestamp:
+        description: Date and time of claim submission
+        type: string
+    type: object
+  models.ClaimReversalRequest:
+    properties:
+      claim_id:
+        description: ID of the claim to be reverted
+        type: string
+    type: object
+  models.ClaimSubmissionRequest:
+    properties:
+      ndc:
+        description: National Drug Code of the medication
+        type: string
+      npi:
+        description: National Provider Identifier of the pharmacy
+        type: string
+      price:
+        description: Price of the medication
+        type: number
+      quantity:
+        description: Quantity of the medication
+        type: number
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample service for managing pharmacy claims.
+  title: Pharmacy Claim Service API
+  version: "1.0"
+paths:
+  /claims:
+    post:
+      consumes:
+      - application/json
+      description: Receives claim data and processes it
+      parameters:
+      - description: Claim data to submit
+        in: body
+        name: claim
+        required: true
+        schema:
+          $ref: '#/definitions/models.ClaimSubmissionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Claim submitted successfully
+          schema:
+            $ref: '#/definitions/models.Claim'
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
+      security:
+      - ApiKeyAuth: []
+      summary: Submit a new claim
+      tags:
+      - claims
+  /claims/{id}:
+    get:
+      description: Returns the details of a specific claim by its ID
+      parameters:
+      - description: Claim ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Claim details
+          schema:
+            $ref: '#/definitions/models.Claim'
+        "400":
+          description: Claim ID not provided
+        "404":
+          description: Claim not found
+        "500":
+          description: Internal server error
+      security:
+      - ApiKeyAuth: []
+      summary: Get claim by ID
+      tags:
+      - claims
+  /claims/reverse:
+    post:
+      consumes:
+      - application/json
+      description: Reverts an already submitted claim and records the reversal
+      parameters:
+      - description: Claim ID to be reverted
+        in: body
+        name: reversal
+        required: true
+        schema:
+          $ref: '#/definitions/models.ClaimReversalRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Reversal successfully recorded
+          schema:
+            type: object
+        "400":
+          description: Invalid request or claim already reverted/not found
+        "500":
+          description: Internal server error
+      security:
+      - ApiKeyAuth: []
+      summary: Reverse an existing claim
+      tags:
+      - claims
+  /health:
+    get:
+      description: Returns an "ok" status if the application is running.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Status OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Checks application health
+      tags:
+      - health
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
