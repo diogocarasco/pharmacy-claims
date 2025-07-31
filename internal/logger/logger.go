@@ -44,7 +44,7 @@ var (
 // NewLogger creates and returns a new instance of defaultLogger.
 func NewLogger() Logger {
 	once.Do(func() {
-		logDir := "logs"
+		logDir := "/tmp/logs"
 		logFileName := "app.log"
 		logFilePath := filepath.Join(logDir, logFileName)
 
